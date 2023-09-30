@@ -1,12 +1,27 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:transport/app/data/repositories/chat_repository.dart';
+import 'package:transport/app/data/repositories/consignments_repository.dart';
+import 'package:transport/app/data/repositories/user_repository.dart';
+import 'package:transport/app/data/repositories/vehicle_repository.dart';
+import 'package:transport/app/data/services/auth_service.dart';
 
 import 'app/routes/app_pages.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  Get.put(AuthService());
+
+  //Lazy Put Repositories
+  Get.create<VehicleRepository>(() => VehicleRepository());
+  Get.create<ConsignmentRepository>(() => ConsignmentRepository());
+  Get.create<ChatRepository>(() => ChatRepository());
+  Get.create<UserRepository>(() => UserRepository());
+
   runApp(
     GetMaterialApp(
       title: "Application",
@@ -14,19 +29,25 @@ void main() {
       getPages: AppPages.routes,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        useMaterial3: false,
         scaffoldBackgroundColor: Colors.white,
         textTheme: GoogleFonts.poppinsTextTheme(),
-        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-          backgroundColor: Colors.white,
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
           elevation: 20,
+          type: BottomNavigationBarType.shifting,
+          showSelectedLabels: true,
+          selectedItemColor: Colors.black.withOpacity(0.75),
+          unselectedItemColor: Colors.black,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
             elevation: const MaterialStatePropertyAll(4),
             overlayColor: MaterialStatePropertyAll(Colors.blue.shade400),
-            shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            )),
+            shape: MaterialStatePropertyAll(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
             padding: const MaterialStatePropertyAll(
               EdgeInsets.symmetric(
                 horizontal: 30,

@@ -47,7 +47,20 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>app-1-77642443204-ios-c1b4737ae719c77f471c91</string>
+			</array>
+			<key>CFBundleURLName</key>
+			<string></string>
+		</dict>
+	</array>
 	<key>com.apple.security.network.client</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>Permission to access the photo library</string>
 </dict>
 </plist>

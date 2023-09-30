@@ -1,59 +1,51 @@
-import 'dart:math';
+import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:transport/app/data/models/consignment_card.dart';
+import 'package:transport/app/data/models/chat.dart';
+import 'package:transport/app/data/models/consignment.dart';
+import 'package:transport/app/data/repositories/chat_repository.dart';
+import 'package:transport/app/data/repositories/consignments_repository.dart';
+import 'package:transport/app/data/services/auth_service.dart';
+import 'package:transport/app/routes/app_pages.dart';
 
 class HomeController extends GetxController {
   late RxInt currentIndex;
   late RxList<Consignment> consignments;
+  late StreamSubscription<QuerySnapshot<Consignment>> listener;
+
+  late TextEditingController fromController;
+  late TextEditingController toController;
 
   @override
   void onInit() {
+    fromController = TextEditingController();
+    toController = TextEditingController();
     currentIndex = 0.obs;
     consignments = <Consignment>[].obs;
-    _fillConsignmentsWithExample();
+    listenToConsignmentStream();
     super.onInit();
   }
 
-  void _fillConsignmentsWithExample() {
-    //This function is just for providing example data
-    List<String> cities = [
-      "Delhi",
-      "Mumbai",
-      "Chennai",
-      "Kolkata",
-      "Bangalore"
-    ];
-    List<String> products = [
-      "Shoes",
-      "Clothes",
-      "Electronics",
-      "Furniture",
-      "Books"
-    ];
-    List<String> logisticsCompanies = ["Nike", "Adidas", "UPS", "FedEx", "DHL"];
-
-    Random random = Random();
-
-    for (int i = 0; i < 10; i++) {
-      Consignment consignment = Consignment(
-        from: cities[random.nextInt(cities.length)],
-        to: cities[random.nextInt(cities.length)],
-        product: products[random.nextInt(products.length)],
-        price: random.nextDouble() * 100,
-        date: DateTime.now().subtract(
-            Duration(days: random.nextInt(7), minutes: random.nextInt(1440))),
-        advance: random.nextDouble() * 50,
-        logisticsName:
-            logisticsCompanies[random.nextInt(logisticsCompanies.length)],
-      );
-      print("Adding consignment : ${consignment.from}");
-      consignments.add(consignment);
-    }
+  void listenToConsignmentStream() {
+    listener =
+        Get.find<ConsignmentRepository>().streamConsignments().listen((event) {
+      consignments.value = event.docs.map((e) => e.data()).toList();
+    });
   }
 
   void changeIndex(int index) {
     currentIndex.value = index;
+  }
+
+  Future<void> onMessageRequest(Consignment consignment) async {
+    Get.toNamed(Routes.LOADING, arguments: "Loading...");
+    final uid = Get.find<AuthService>().userId;
+    Chat chat =
+        await Get.find<ChatRepository>().initiateChat([uid, consignment.uid]);
+    Get.back();
+    Get.toNamed(Routes.CHAT, arguments: chat);
   }
 
   @override
@@ -63,6 +55,7 @@ class HomeController extends GetxController {
 
   @override
   void onClose() {
+    listener.cancel();
     super.onClose();
   }
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:transport/app/routes/app_pages.dart';
@@ -35,12 +36,41 @@ class LoginController extends GetxController {
     }
   }
 
-  void login() {
-    Get.toNamed(
-      Routes.OTP,
-      arguments: {
-        'phoneNumber': phoneNumberController.text,
+  void login() async {
+    if (phoneNumberController.text.length < 13 ||
+        !phoneNumberController.text.startsWith("+")) {
+      Get.snackbar(
+        'Alert',
+        'Please enter a valid phone number',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return;
+    }
+    Get.toNamed(Routes.LOADING, arguments: "Sending OTP...");
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: phoneNumberController.text,
+      verificationCompleted: (phoneAuthCredential) {},
+      verificationFailed: (error) {
+        Get.back();
+        Get.snackbar(
+          'Error',
+          error.message ?? 'Something went wrong',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        throw error;
       },
+      codeSent: (verificationId, forceResendingToken) {
+        Get.back();
+        Get.toNamed(
+          Routes.OTP,
+          arguments: {
+            'phoneNumber': phoneNumberController.text,
+            'verificationId': verificationId,
+            'forceResendingToken': forceResendingToken,
+          },
+        );
+      },
+      codeAutoRetrievalTimeout: (verificationId) {},
     );
   }
 

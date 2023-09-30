@@ -3,32 +3,46 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 import 'package:lottie/lottie.dart';
+import 'package:transport/app/modules/inbox/views/inbox_view.dart';
+import 'package:transport/app/modules/my_vehicles/views/my_vehicles_view.dart';
 import 'package:transport/app/modules/profile/views/profile_view.dart';
+import 'package:transport/app/routes/app_pages.dart';
 import 'package:transport/app/widgets/consignment_card.dart';
 
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Obx(
       () {
         return Scaffold(
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {},
-            child: const Icon(CupertinoIcons.add),
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
           bottomNavigationBar: BottomNavigationBar(
-            items: const [
+            items: [
               BottomNavigationBarItem(
-                icon: Icon(IconlyLight.home),
+                icon: Image.network(
+                    "https://cdn-icons-png.flaticon.com/128/2413/2413074.png",
+                    height: 25),
                 label: "Home",
               ),
               BottomNavigationBarItem(
-                icon: Icon(IconlyLight.profile),
+                icon: Image.network(
+                    "https://cdn-icons-png.flaticon.com/128/11202/11202880.png",
+                    height: 25),
+                label: "My Vehicles",
+              ),
+              BottomNavigationBarItem(
+                icon: Image.network(
+                    "https://cdn-icons-png.flaticon.com/128/2165/2165360.png",
+                    height: 25),
+                label: "Inbox",
+              ),
+              BottomNavigationBarItem(
+                icon: Image.network(
+                    "https://cdn-icons-png.flaticon.com/128/3135/3135707.png",
+                    height: 25),
                 label: "Profile",
               ),
             ],
@@ -41,6 +55,8 @@ class HomeView extends GetView<HomeController> {
             index: controller.currentIndex.value,
             children: [
               _buildHomeView(),
+              const MyVehiclesView(),
+              const InboxView(),
               const ProfileView(),
             ],
           ),
@@ -73,6 +89,8 @@ class HomeView extends GetView<HomeController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextField(
+                    onTap: () async {},
+                    controller: controller.fromController,
                     decoration: InputDecoration(
                       prefixIcon: const Icon(CupertinoIcons.location),
                       suffixIcon: IconButton(
@@ -88,6 +106,10 @@ class HomeView extends GetView<HomeController> {
                   ),
                   const SizedBox(height: 15),
                   TextField(
+                    onTap: () {
+                      print("Hello world");
+                    },
+                    controller: controller.toController,
                     decoration: InputDecoration(
                       prefixIcon: const Icon(IconlyLight.location),
                       suffixIcon: IconButton(
@@ -168,6 +190,7 @@ class HomeView extends GetView<HomeController> {
                       itemBuilder: (BuildContext context, int index) {
                         return ConsignmentCard(
                           consignment: controller.consignments[index],
+                          onMessage: controller.onMessageRequest,
                         );
                       },
                     );

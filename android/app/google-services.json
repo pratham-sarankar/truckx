@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "77642443204",
+    "project_id": "habibi-52021",
+    "storage_bucket": "habibi-52021.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77642443204:android:90304363347ac876471c91",
+        "android_client_info": {
+          "package_name": "com.example.transport"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77642443204-jtd9k8i322crjngfmpga0ssat221ff05.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfjSM1sJJ3LD214fGbd-OLLzHkm-IGJho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77642443204-jtd9k8i322crjngfmpga0ssat221ff05.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

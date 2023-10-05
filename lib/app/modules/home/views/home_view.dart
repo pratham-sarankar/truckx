@@ -89,7 +89,9 @@ class HomeView extends GetView<HomeController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TextField(
-                    onTap: () async {},
+                    onTap: () async {
+                      Get.toNamed(Routes.CITY_SELECTOR);
+                    },
                     controller: controller.fromController,
                     decoration: InputDecoration(
                       prefixIcon: const Icon(CupertinoIcons.location),

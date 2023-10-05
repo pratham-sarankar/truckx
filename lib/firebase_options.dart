@@ -50,20 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDfjSM1sJJ3LD214fGbd-OLLzHkm-IGJho',
-    appId: '1:77642443204:android:90304363347ac876471c91',
-    messagingSenderId: '77642443204',
-    projectId: 'habibi-52021',
-    storageBucket: 'habibi-52021.appspot.com',
+    apiKey: 'AIzaSyCf6yLj6LS8S5m8Y5my1EmGMGEZ_Yihi8E',
+    appId: '1:226435440026:android:7e78642208f93097996e23',
+    messagingSenderId: '226435440026',
+    projectId: 'habibi-transport',
+    storageBucket: 'habibi-transport.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCPKzzhyhM3PJecwUzq17O2jxxdIgDs-RM',
-    appId: '1:77642443204:ios:c1b4737ae719c77f471c91',
-    messagingSenderId: '77642443204',
-    projectId: 'habibi-52021',
-    storageBucket: 'habibi-52021.appspot.com',
-    iosClientId: '77642443204-asjvc5q5a5hng2vtom3u1939d44arhkp.apps.googleusercontent.com',
+    apiKey: 'AIzaSyB6wof5IK4N4OOiimWy-KuJ59cH2kTuQLs',
+    appId: '1:226435440026:ios:61dc103ea97345d5996e23',
+    messagingSenderId: '226435440026',
+    projectId: 'habibi-transport',
+    storageBucket: 'habibi-transport.appspot.com',
     iosBundleId: 'com.example.transport',
   );
 }

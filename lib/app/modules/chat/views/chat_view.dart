@@ -15,24 +15,14 @@ class ChatView extends GetView<ChatController> {
       appBar: AppBar(
         title: Row(
           children: [
-            FutureBuilder(
-              future: controller.getPhoto(),
-              builder: (context, snapshot) {
-                return CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    snapshot.data ??
-                        "https://cdn-icons-png.flaticon.com/128/3135/3135715.png",
-                  ),
-                );
-              },
+            CircleAvatar(
+              backgroundImage: NetworkImage(
+                controller.chat.userDetails.photoUrl ??
+                    "https://cdn-icons-png.flaticon.com/128/3135/3135715.png",
+              ),
             ),
             const SizedBox(width: 10),
-            FutureBuilder(
-              future: controller.getTitle(),
-              builder: (context, snapshot) {
-                return Text(snapshot.data ?? "");
-              },
-            ),
+            Text(controller.chat.userDetails.name ?? "Name")
           ],
         ),
         titleSpacing: 0,
@@ -62,22 +52,43 @@ class ChatView extends GetView<ChatController> {
                 child: ListView(
                   reverse: true,
                   children: [
-                    for (Message message in controller.messages)
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 10),
-                        decoration: BoxDecoration(
-                          color: Colors.blue.shade50,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text(
-                          message.content,
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black87,
+                    for (var message in controller.messages)
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: message.isSentByMe
+                            ? MainAxisAlignment.end
+                            : MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            constraints: BoxConstraints(
+                              maxWidth: Get.width * 0.8,
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            margin: const EdgeInsets.only(bottom: 15),
+                            decoration: BoxDecoration(
+                              color: message.isSentByMe
+                                  ? Colors.blue.shade50
+                                  : Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.shade100,
+                                  blurRadius: 1,
+                                  offset: Offset(0, 5),
+                                ),
+                              ],
+                            ),
+                            child: Text(
+                              message.content,
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black87,
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                   ],
                 ),

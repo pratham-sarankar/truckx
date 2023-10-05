@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "77642443204",
-    "project_id": "habibi-52021",
-    "storage_bucket": "habibi-52021.appspot.com"
+    "project_number": "226435440026",
+    "project_id": "habibi-transport",
+    "storage_bucket": "habibi-transport.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:77642443204:android:90304363347ac876471c91",
+        "mobilesdk_app_id": "1:226435440026:android:7e78642208f93097996e23",
         "android_client_info": {
           "package_name": "com.example.transport"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "77642443204-jtd9k8i322crjngfmpga0ssat221ff05.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDfjSM1sJJ3LD214fGbd-OLLzHkm-IGJho"
+          "current_key": "AIzaSyCf6yLj6LS8S5m8Y5my1EmGMGEZ_Yihi8E"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "77642443204-jtd9k8i322crjngfmpga0ssat221ff05.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

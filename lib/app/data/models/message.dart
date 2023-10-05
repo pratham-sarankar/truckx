@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Message {
   final String id; // Unique message ID
@@ -12,6 +13,8 @@ class Message {
     required this.content,
     required this.timestamp,
   });
+
+  bool get isSentByMe => senderId == FirebaseAuth.instance.currentUser?.uid;
 
   // Factory constructor to create a Message object from a map (Firestore data)
   factory Message.fromMap(Map<String, dynamic> map) {

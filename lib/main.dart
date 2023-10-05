@@ -1,9 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:line_icons/line_icon.dart';
 import 'package:transport/app/data/repositories/chat_repository.dart';
 import 'package:transport/app/data/repositories/consignments_repository.dart';
+import 'package:transport/app/data/repositories/place_repository.dart';
 import 'package:transport/app/data/repositories/user_repository.dart';
 import 'package:transport/app/data/repositories/vehicle_repository.dart';
 import 'package:transport/app/data/services/auth_service.dart';
@@ -12,6 +15,7 @@ import 'app/routes/app_pages.dart';
 import 'firebase_options.dart';
 
 void main() async {
+  await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   Get.put(AuthService());
@@ -21,6 +25,7 @@ void main() async {
   Get.create<ConsignmentRepository>(() => ConsignmentRepository());
   Get.create<ChatRepository>(() => ChatRepository());
   Get.create<UserRepository>(() => UserRepository());
+  Get.create<PlaceRepository>(() => PlaceRepository());
 
   runApp(
     GetMaterialApp(

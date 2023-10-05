@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:transport/app/data/models/chat.dart';
 import 'package:transport/app/data/repositories/chat_repository.dart';
@@ -5,34 +6,21 @@ import 'package:transport/app/data/services/auth_service.dart';
 
 class InboxController extends GetxController {
   late RxList<Chat> chats;
+  late TextEditingController searchController;
 
   @override
   void onInit() {
+    searchController = TextEditingController();
+    searchController.addListener(addSearchListener);
     super.onInit();
-    initializeList();
+    fetchChats();
   }
 
-  void initializeList() async {
+  void addSearchListener() {}
+
+  void fetchChats() async {
     chats = <Chat>[].obs;
     chats.value = await Get.find<ChatRepository>().getChats();
-  }
-
-  Future<String> getTilePhoto(Chat chat) async {
-    String id = chat.participants[0] == Get.find<AuthService>().userId
-        ? chat.participants[1]
-        : chat.participants[0];
-    return (await Get.find<ChatRepository>().getUserPhoto(id));
-  }
-
-  Future<String> getTileTitle(Chat chat) async {
-    if (chat.participants.length == 2) {
-      String id = chat.participants[0] == Get.find<AuthService>().userId
-          ? chat.participants[1]
-          : chat.participants[0];
-      return (await Get.find<ChatRepository>().getUserName(id));
-    } else {
-      return "${chat.participants.length} users";
-    }
   }
 
   String getTileTime(DateTime? time) {
@@ -49,6 +37,7 @@ class InboxController extends GetxController {
 
   @override
   void onClose() {
+    searchController.dispose();
     super.onClose();
   }
 }

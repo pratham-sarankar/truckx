@@ -32,6 +32,7 @@ class InboxView extends GetView<InboxController> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: TextField(
+                      controller: controller.searchController,
                       cursorColor: Colors.black87,
                       decoration: InputDecoration(
                         hintText: "Search",
@@ -55,42 +56,41 @@ class InboxView extends GetView<InboxController> {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: [
-                  for (var chat in controller.chats)
-                    Column(
-                      children: [
-                        ListTile(
-                          onTap: () {
-                            Get.toNamed(Routes.CHAT, arguments: chat);
-                          },
-                          leading: FutureBuilder(
-                            future: controller.getTilePhoto(chat),
-                            builder: (context, snapshot) {
-                              return CircleAvatar(
+              child: Obx(() {
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    controller.fetchChats();
+                  },
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    children: [
+                      for (var chat in controller.chats)
+                        Column(
+                          children: [
+                            ListTile(
+                              onTap: () {
+                                Get.toNamed(Routes.CHAT, arguments: chat);
+                              },
+                              leading: CircleAvatar(
                                 radius: 25,
                                 backgroundColor: Colors.transparent,
-                                backgroundImage:
-                                    NetworkImage(snapshot.data.toString()),
-                              );
-                            },
-                          ),
-                          title: FutureBuilder(
-                            future: controller.getTileTitle(chat),
-                            builder: (context, snapshot) {
-                              return Text(snapshot.data.toString());
-                            },
-                          ),
-                          subtitle: Text(chat.lastMessage ?? "Last Message"),
-                          trailing: Text(
-                              controller.getTileTime(chat.lastMessageTime)),
+                                backgroundImage: NetworkImage(chat
+                                        .userDetails.photoUrl ??
+                                    "https://cdn-icons-png.flaticon.com/128/3135/3135715.png"),
+                              ),
+                              title: Text(chat.userDetails.name ?? "Name"),
+                              subtitle:
+                                  Text(chat.lastMessage ?? "Last Message"),
+                              trailing: Text(
+                                  controller.getTileTime(chat.lastMessageTime)),
+                            ),
+                            const Divider(),
+                          ],
                         ),
-                        const Divider(),
-                      ],
-                    ),
-                ],
-              ),
+                    ],
+                  ),
+                );
+              }),
             )
           ],
         ),

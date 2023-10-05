@@ -30,24 +30,6 @@ class ChatController extends GetxController {
     });
   }
 
-  Future<String> getPhoto() async {
-    String id = chat.participants[0] == Get.find<AuthService>().userId
-        ? chat.participants[1]
-        : chat.participants[0];
-    return (await Get.find<ChatRepository>().getUserPhoto(id));
-  }
-
-  Future<String> getTitle() async {
-    if (chat.participants.length == 2) {
-      String id = chat.participants[0] == Get.find<AuthService>().userId
-          ? chat.participants[1]
-          : chat.participants[0];
-      return (await Get.find<ChatRepository>().getUserName(id));
-    } else {
-      return "${chat.participants.length} users";
-    }
-  }
-
   void sendMessage() async {
     if (messageController.text.isNotEmpty) {
       var message = Message(

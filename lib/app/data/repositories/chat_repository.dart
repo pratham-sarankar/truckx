@@ -68,35 +68,27 @@ class ChatRepository {
         .collection("chats")
         .where("participants", arrayContains: uid)
         .get();
-    return chats.docs.map<Chat>((e) {
-      final data = e.data();
-      data['id'] = e.id;
-      return Chat.fromJson(data);
-    }).toList();
+    List<Chat> result = [];
+    for (final chat in chats.docs) {
+      final data = chat.data();
+      data['id'] = chat.id;
+      final participants = data['participants'] as List<dynamic>;
+      final userDetails = await getUserDetails(
+          participants.firstWhere((element) => element != uid));
+      data['userDetails'] = userDetails;
+      result.add(Chat.fromJson(data));
+    }
+    return result;
   }
 
-  Future<String> getUserName(String id) async {
+  Future<Map<String, dynamic>> getUserDetails(String id) async {
     return FirebaseFirestore.instance
         .collection("users")
         .doc(id)
         .get()
         .then((value) {
-      //Return name, email or phoneNumber
       final data = value.data()!;
-      return data['name'] ?? data['email'] ?? data['phoneNumber'];
-    });
-  }
-
-  Future<String> getUserPhoto(String id) {
-    return FirebaseFirestore.instance
-        .collection("users")
-        .doc(id)
-        .get()
-        .then((value) {
-      //Return photoUrl
-      final data = value.data()!;
-      return data['photoUrl'] ??
-          "https://cdn-icons-png.flaticon.com/128/3135/3135715.png";
+      return data;
     });
   }
 }

@@ -15,10 +15,11 @@ dependencies:
   mask_text_input_formatter: ^2.5.0
   animated_text_kit: ^4.2.2
   line_icons: ^2.0.3
-  firebase_core: ^2.15.1
+  firebase_core: ^2.17.0
   firebase_auth: 4.9.0
   image_picker: ^1.0.4
   firebase_storage: ^11.2.6
+  flutter_dotenv: ^5.1.0
   get: 4.6.5
   flutter:
     sdk: flutter
@@ -34,4 +35,7 @@ flutter:
   assets:
     - assets/lotties/
     - assets/svgs/
+    - assets/data/
+    - .env
+
 
